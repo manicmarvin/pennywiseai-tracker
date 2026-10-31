@@ -144,13 +144,15 @@ class AnalyticsRowsForTest {
     }
 
     @Test
-    fun `expense nets the same refund the same way`() {
-        val v = view(TransactionTypeFilter.EXPENSE)
-        assertEquals(BigDecimal("300"), v.total)
-        assertEquals(mapOf("Shopping" to BigDecimal("300")), v.category)
-        assertEquals(mapOf("Grocer" to BigDecimal("500")), v.merchant)
-        assertEquals(mapOf("Bank_1111" to BigDecimal("500")), v.account)
-        assertEquals(mapOf(oct2 to BigDecimal("200")), v.refundByDay)
+    fun `expense includes card spend and nets refunds exactly like spending`() {
+        // Fork: card purchases are expenses, so the Expense view is the Spending view.
+        val e = view(TransactionTypeFilter.EXPENSE)
+        val sp = view(TransactionTypeFilter.SPENDING)
+        assertEquals(sp.total, e.total)
+        assertEquals(sp.category, e.category)
+        assertEquals(sp.merchant, e.merchant)
+        assertEquals(sp.account, e.account)
+        assertEquals(sp.refundByDay, e.refundByDay)
     }
 
     @Test
