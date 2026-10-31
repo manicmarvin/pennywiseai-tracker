@@ -53,7 +53,8 @@ class SmsTransactionProcessor @Inject constructor(
     private val ruleEngine: RuleEngine,
     private val tagRepository: TagRepository,
     private val ignoredAccountsStore: IgnoredAccountsStore,
-    private val database: PennyWiseDatabase
+    private val database: PennyWiseDatabase,
+    private val cardPaymentMatcher: com.pennywiseai.tracker.domain.usecase.CardPaymentMatcher
 ) {
     private val bankAccountMerges = BankAccountMergeStore(appContext)
     companion object {
@@ -283,6 +284,14 @@ class SmsTransactionProcessor @Inject constructor(
 
                 // Trigger widget refresh for the transaction-derived widgets
                 com.pennywiseai.tracker.widget.WidgetRefresher.refreshTransactionWidgets(appContext)
+
+                // A card bill payment: pair the bank debit with the card's
+                // confirmation, whichever arrived second.
+                try {
+                    cardPaymentMatcher.matchBetween(finalEntity.dateTime, finalEntity.dateTime)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Card payment matching failed: ${e.message}")
+                }
 
                 return ProcessingResult(true, transactionId = rowId)
             } else {

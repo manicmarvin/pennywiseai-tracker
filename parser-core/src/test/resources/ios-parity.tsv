@@ -291,7 +291,7 @@ AX-ICICIT-S	Your account has been debited with Rs 649.00 towards Netflix Enterta
 AX-ICICIT-S	Rs. 500.00 will be debited from your account on 05-Oct-25 for EMI payment	NONE
 AX-ICICIT-S	Your ICICI Bank Account will be debited with Rs 1,000.00 on 10-Oct-25	NONE
 AX-ICICIT-S	AutoPay: Rs 299.00 will be debited on 15-Oct-25 for Spotify subscription	NONE
-AD-ICICIT-S	Payment of Rs 26,266.00 has been received on your ICICI Bank Credit Card XX9006 through Bharat Bill Payment System on 06-DEC-25.	NONE
+AD-ICICIT-S	Payment of Rs 26,266.00 has been received on your ICICI Bank Credit Card XX9006 through Bharat Bill Payment System on 06-DEC-25.	TRANSFER|26266.00|ICICI Bank Credit Card|null|null|ICICI Bank|INR|null|false|29cda191dda2ba7744177f159968a0bd
 AX-ICICIT-S	ICICI Bank Acct XX123 debited for Rs 500.00 on 01-Oct-25; merchant credited. UPI: 543210987654. Call 18002662 for dispute. Updated Bal: Rs 5,000.00	EXPENSE|500.00|merchant|123|5000.00|ICICI Bank|INR|null|false|ca9d5dab15b71f9ef9d5ef7a73d5c54c
 AX-ICICIT-S	Rs. 1,000.00 has been debited from your account XX456 for bill payment. Avl Bal: Rs 3,000.00	EXPENSE|1000.00|null|456|3000.00|ICICI Bank|INR|null|false|7b15d3c88d06e51c74f2f853862ba668
 AX-ICICIT-S	Your account has been successfully debited with Rs 250.00. Reference: TXN123456789	EXPENSE|250.00|null|null|null|ICICI Bank|INR|null|false|6fb0380334c3f9eafdc4c18094bfdf5d
