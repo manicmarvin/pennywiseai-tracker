@@ -93,8 +93,33 @@ class ICICIBankParserTest {
                 shouldParse = false
             ),
             ParserTestCase(
-                name = "Credit card bill payment",
+                name = "Credit card bill payment (BBPS) is a transfer to the card",
                 message = "Payment of Rs 26,266.00 has been received on your ICICI Bank Credit Card XX9006 through Bharat Bill Payment System on 06-DEC-25.",
+                sender = "AD-ICICIT-S",
+                expected = ExpectedTransaction(
+                    amount = BigDecimal("26266.00"),
+                    currency = "INR",
+                    type = TransactionType.TRANSFER,
+                    merchant = "ICICI Bank Credit Card",
+                    toAccount = "9006",
+                    expectNullAccountLast4 = true
+                )
+            ),
+            ParserTestCase(
+                name = "Credit card bill payment (auto debit) is a transfer to the card",
+                message = "Dear Customer, thank you for your payment of INR 7,109.97 towards ICICI Bank Credit Card Account XX1234 through Auto Debit from Account XX5678 on 20-Jun-26",
+                sender = "AD-ICICIT-S",
+                expected = ExpectedTransaction(
+                    amount = BigDecimal("7109.97"),
+                    currency = "INR",
+                    type = TransactionType.TRANSFER,
+                    toAccount = "1234",
+                    expectNullAccountLast4 = true
+                )
+            ),
+            ParserTestCase(
+                name = "Card due reminder is not a transaction",
+                message = "Total Amount Due on ICICI Bank Credit Card XX1234 is INR 67,387.25. Amount will be debited from your bank account on or before 20-Dec-25. Pls ignore if paid.",
                 sender = "AD-ICICIT-S",
                 shouldParse = false
             ),

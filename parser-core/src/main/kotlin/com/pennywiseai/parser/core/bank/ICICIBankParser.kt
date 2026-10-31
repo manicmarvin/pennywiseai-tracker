@@ -1,5 +1,6 @@
 package com.pennywiseai.parser.core.bank
 
+import com.pennywiseai.parser.core.CardPaymentConfirmation
 import com.pennywiseai.parser.core.ParsedTransaction
 import com.pennywiseai.parser.core.TransactionType
 import java.math.BigDecimal
@@ -22,6 +23,29 @@ class ICICIBankParser : BaseIndianBankParser() {
     override fun getBankName() = "ICICI Bank"
 
     override fun parse(smsBody: String, sender: String, timestamp: Long): ParsedTransaction? {
+        // Card bill-payment confirmation: kept as a TRANSFER so the app can pair
+        // it with the paying account's debit. The card goes in toAccount, not
+        // accountLast4, so no balance or card row is touched by this SMS.
+        if (CardPaymentConfirmation.matches(smsBody) && smsBody.contains("ICICI Bank Credit Card", ignoreCase = true)) {
+            val amount = extractAmount(smsBody) ?: return null
+            val card = Regex("""credit card(?: account)?\s+xx(\d{4})""", RegexOption.IGNORE_CASE)
+                .find(smsBody)?.groupValues?.get(1)
+            return ParsedTransaction(
+                amount = amount,
+                type = TransactionType.TRANSFER,
+                merchant = "ICICI Bank Credit Card",
+                reference = null,
+                accountLast4 = null,
+                balance = null,
+                smsBody = smsBody,
+                sender = sender,
+                timestamp = timestamp,
+                bankName = getBankName(),
+                currency = extractCurrencyFromMessage(smsBody) ?: "INR",
+                toAccount = card
+            )
+        }
+
         // Skip non-transaction messages
         if (!isTransactionMessage(smsBody)) {
             return null

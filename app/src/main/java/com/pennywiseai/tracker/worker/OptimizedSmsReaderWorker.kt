@@ -87,7 +87,8 @@ class OptimizedSmsReaderWorker @AssistedInject constructor(
     private val ignoredAccountsStore: IgnoredAccountsStore,
     private val ruleEngine: RuleEngine,
     private val tagRepository: TagRepository,
-    private val generateIncomeAutopayUseCase: com.pennywiseai.tracker.domain.usecase.GenerateIncomeAutopayUseCase
+    private val generateIncomeAutopayUseCase: com.pennywiseai.tracker.domain.usecase.GenerateIncomeAutopayUseCase,
+    private val cardPaymentMatcher: com.pennywiseai.tracker.domain.usecase.CardPaymentMatcher
 ) : CoroutineWorker(appContext, workerParams) {
     private val bankAccountMerges = BankAccountMergeStore(appContext)
 
@@ -450,6 +451,13 @@ class OptimizedSmsReaderWorker @AssistedInject constructor(
                 generateIncomeAutopayUseCase.execute()
             } catch (e: Exception) {
                 Log.e(TAG, "Income autopay phantom creator failed: ${e.message}", e)
+            }
+            // Card bill payments: pair bank debits with card-side confirmations
+            // across the whole history, so past payments become transfers too.
+            try {
+                cardPaymentMatcher.matchAll()
+            } catch (e: Exception) {
+                Log.e(TAG, "Card payment matching failed: ${e.message}", e)
             }
             reportProgress(stats)
             // WorkManager clears `progress` once work finishes, so a caller
