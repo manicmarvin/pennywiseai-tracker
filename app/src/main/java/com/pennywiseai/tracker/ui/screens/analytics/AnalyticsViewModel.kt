@@ -86,8 +86,8 @@ internal class RefundNetting(
  * on Expense: those users count the card bill payment instead, and adding card
  * spends would count the same money twice.
  */
-internal fun defaultTypeFilter(countCreditCardAsExpense: Boolean): TransactionTypeFilter =
-    if (countCreditCardAsExpense) TransactionTypeFilter.SPENDING else TransactionTypeFilter.EXPENSE
+internal fun defaultTypeFilter(@Suppress("UNUSED_PARAMETER") countCreditCardAsExpense: Boolean): TransactionTypeFilter =
+    TransactionTypeFilter.EXPENSE
 
 /**
  * The Analytics type filter: follows the setting-based default (the screen

@@ -57,11 +57,8 @@ class AnalyticsRowsForTest {
     }
 
     @Test
-    fun `spending is exactly expense plus credit`() {
-        assertEquals(
-            amounts(TransactionTypeFilter.EXPENSE) + amounts(TransactionTypeFilter.CREDIT),
-            amounts(TransactionTypeFilter.SPENDING)
-        )
+    fun `expense includes card spend, so it equals spending`() {
+        assertEquals(amounts(TransactionTypeFilter.SPENDING), amounts(TransactionTypeFilter.EXPENSE))
     }
 
     @Test
@@ -74,11 +71,12 @@ class AnalyticsRowsForTest {
     }
 
     @Test
-    fun `spending stays out of the Transactions type menu`() {
+    fun `spending and credit stay out of the type menus`() {
         assertFalse(TransactionTypeFilter.SPENDING.inTransactionsList)
+        assertFalse(TransactionTypeFilter.CREDIT.inTransactionsList)
         assertTrue(
             TransactionTypeFilter.entries
-                .filter { it != TransactionTypeFilter.SPENDING }
+                .filter { it != TransactionTypeFilter.SPENDING && it != TransactionTypeFilter.CREDIT }
                 .all { it.inTransactionsList }
         )
     }
@@ -172,7 +170,7 @@ class AnalyticsRowsForTest {
 
     @Test
     fun `Analytics opens on Spending only when card spend counts as expense`() {
-        assertEquals(TransactionTypeFilter.SPENDING, defaultTypeFilter(countCreditCardAsExpense = true))
+        assertEquals(TransactionTypeFilter.EXPENSE, defaultTypeFilter(countCreditCardAsExpense = true))
         assertEquals(TransactionTypeFilter.EXPENSE, defaultTypeFilter(countCreditCardAsExpense = false))
     }
 

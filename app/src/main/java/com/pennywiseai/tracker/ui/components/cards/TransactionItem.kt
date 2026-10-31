@@ -54,7 +54,7 @@ fun TransactionItem(
         when (transaction.transactionType) {
             TransactionType.INCOME -> if (!isDark) income_light else income_dark
             TransactionType.EXPENSE -> if (!isDark) expense_light else expense_dark
-            TransactionType.CREDIT -> if (!isDark) credit_light else credit_dark
+            TransactionType.CREDIT -> if (!isDark) expense_light else expense_dark
             TransactionType.TRANSFER -> if (!isDark) transfer_light else transfer_dark
             TransactionType.INVESTMENT -> if (!isDark) investment_light else investment_dark
         }
@@ -97,7 +97,7 @@ fun TransactionItem(
 
             if (showTypeLabel) {
                 when (transaction.transactionType) {
-                    TransactionType.CREDIT -> add(resources.getString(R.string.txn_item_tag_credit))
+                    TransactionType.CREDIT -> {}
                     TransactionType.TRANSFER -> {
                         if (transferTitleOverride(transaction, resources) == null) {
                             add(resources.getString(R.string.txn_item_tag_transfer))

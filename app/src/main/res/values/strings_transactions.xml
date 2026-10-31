@@ -54,7 +54,7 @@
     <!-- Transaction types -->
     <string name="txn_type_income">Income</string>
     <string name="txn_type_expense">Expense</string>
-    <string name="txn_type_credit">Credit</string>
+    <string name="txn_type_credit">Card expense</string>
     <string name="txn_type_transfer">Transfer</string>
     <string name="txn_type_investment">Investment</string>
 

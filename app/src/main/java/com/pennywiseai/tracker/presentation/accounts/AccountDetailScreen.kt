@@ -526,7 +526,7 @@ private fun AccountTransactionItem(
     val amountColor = when (transaction.transactionType) {
         TransactionType.INCOME -> if (!isSystemInDarkTheme()) income_light else income_dark
         TransactionType.EXPENSE -> if (!isSystemInDarkTheme()) expense_light else expense_dark
-        TransactionType.CREDIT -> if (!isSystemInDarkTheme()) credit_light else credit_dark
+        TransactionType.CREDIT -> if (!isSystemInDarkTheme()) expense_light else expense_dark
         TransactionType.TRANSFER -> if (!isSystemInDarkTheme()) transfer_light else transfer_dark
         TransactionType.INVESTMENT -> if (!isSystemInDarkTheme()) investment_light else investment_dark
     }
