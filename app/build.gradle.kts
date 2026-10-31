@@ -46,6 +46,18 @@ android {
     }
 
     signingConfigs {
+        // Personal fork: sign debug builds with one fixed key (restored by CI
+        // from the DEBUG_KEYSTORE_BASE64 secret) so each new APK installs as an
+        // update. Without the env var, Gradle's per-machine debug key is used.
+        System.getenv("DEBUG_KEYSTORE_FILE")?.takeIf { it.isNotEmpty() }?.let { path ->
+            getByName("debug") {
+                storeFile = file(path)
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
+        }
+
         // Only create signing config for non-F-Droid builds
         if (!gradle.startParameter.taskNames.any { it.contains("fdroid", ignoreCase = true) }) {
             val localPropertiesFile = rootProject.file("local.properties")
