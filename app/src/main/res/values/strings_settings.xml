@@ -19,6 +19,9 @@
     <!-- Personalization -->
     <string name="settings_personalization_section">Personalization</string>
     <string name="settings_appearance_title">Appearance</string>
+    <string name="settings_name_title">Your name</string>
+    <string name="settings_name_label">Name</string>
+    <string name="settings_name_not_set">Not set</string>
     <string name="settings_appearance_subtitle">Theme, colors, fonts &amp; navigation</string>
     <string name="settings_language_title">Language</string>
     <string name="settings_language_subtitle">Choose the app language</string>
