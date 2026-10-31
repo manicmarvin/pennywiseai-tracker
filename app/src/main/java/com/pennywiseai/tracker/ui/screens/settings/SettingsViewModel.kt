@@ -405,6 +405,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun updateUserName(name: String) {
+        viewModelScope.launch {
+            // Blank goes back to the placeholder the rest of the app expects.
+            userPreferencesRepository.updateUserName(name.trim().ifEmpty { "User" })
+        }
+    }
+
     fun setCountCreditCardAsExpense(enabled: Boolean) {
         viewModelScope.launch {
             userPreferencesRepository.setCountCreditCardAsExpense(enabled)

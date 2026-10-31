@@ -176,6 +176,7 @@ fun SettingsScreen(
     var showDisplayCurrencyDialog by remember { mutableStateOf(false) }
     var showNumberFormatDialog by remember { mutableStateOf(false) }
     var showDateFormatDialog by remember { mutableStateOf(false) }
+    var showNameDialog by remember { mutableStateOf(false) }
     var showTrackedAppsDialog by remember { mutableStateOf(false) }
     val trackedAppsViewModel: TrackedAppsViewModel = hiltViewModel()
     val trackedApps by trackedAppsViewModel.tracked.collectAsStateWithLifecycle()
@@ -320,13 +321,24 @@ fun SettingsScreen(
             SectionHeaderV2(title = stringResource(R.string.settings_personalization_section))
             SettingsGroup {
                 SettingsNavItem(
+                    icon = Icons.Default.Person,
+                    iconBgColor = orange_light,
+                    iconTint = orange_dark,
+                    title = stringResource(R.string.settings_name_title),
+                    subtitle = themeUiState.userName.trim()
+                        .takeIf { it.isNotEmpty() && it != "User" }
+                        ?: stringResource(R.string.settings_name_not_set),
+                    onClick = { showNameDialog = true },
+                    position = ListItemPosition.Top
+                )
+                SettingsNavItem(
                     icon = Icons.Default.Palette,
                     iconBgColor = orange_light,
                     iconTint = orange_dark,
                     title = stringResource(R.string.settings_appearance_title),
                     subtitle = stringResource(R.string.settings_appearance_subtitle),
                     onClick = onNavigateToAppearance,
-                    position = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) ListItemPosition.Top else ListItemPosition.Single
+                    position = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) ListItemPosition.Middle else ListItemPosition.Bottom
                 )
                 // Per-app language is a system screen on Android 13+; older
                 // versions follow the device language.
@@ -1014,6 +1026,38 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showDisplayCurrencyDialog = false }) {
+                    Text(stringResource(R.string.settings_action_cancel))
+                }
+            }
+        )
+    }
+
+    if (showNameDialog) {
+        var nameText by remember {
+            mutableStateOf(themeUiState.userName.takeIf { it != "User" }.orEmpty())
+        }
+        AlertDialog(
+            onDismissRequest = { showNameDialog = false },
+            title = { Text(stringResource(R.string.settings_name_title)) },
+            text = {
+                OutlinedTextField(
+                    value = nameText,
+                    onValueChange = { nameText = it },
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.settings_name_label)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    settingsViewModel.updateUserName(nameText)
+                    showNameDialog = false
+                }) {
+                    Text(stringResource(R.string.settings_action_done))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showNameDialog = false }) {
                     Text(stringResource(R.string.settings_action_cancel))
                 }
             }
