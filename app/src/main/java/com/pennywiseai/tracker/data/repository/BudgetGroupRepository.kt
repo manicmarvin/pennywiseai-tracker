@@ -693,7 +693,8 @@ class BudgetGroupRepository @Inject constructor(
     ): BigDecimal {
         return transactions.fold(BigDecimal.ZERO) { acc, txWithSplits ->
             val tx = txWithSplits.transaction.forTotals() ?: return@fold acc
-            if (tx.transactionType != TransactionType.EXPENSE && tx.transactionType != TransactionType.INVESTMENT) return@fold acc
+            if (tx.transactionType != TransactionType.EXPENSE && tx.transactionType != TransactionType.CREDIT &&
+                tx.transactionType != TransactionType.INVESTMENT) return@fold acc
             acc + tx.amount
         }
     }

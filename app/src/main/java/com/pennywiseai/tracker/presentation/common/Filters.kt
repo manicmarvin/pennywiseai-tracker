@@ -44,7 +44,8 @@ enum class TransactionTypeFilter(@StringRes val labelRes: Int) {
         get() = when (this) {
             ALL -> null
             INCOME -> setOf(TransactionType.INCOME)
-            EXPENSE -> setOf(TransactionType.EXPENSE)
+            // Card purchases are expenses (paid later); bill payments are transfers.
+            EXPENSE -> setOf(TransactionType.EXPENSE, TransactionType.CREDIT)
             CREDIT -> setOf(TransactionType.CREDIT)
             SPENDING -> setOf(TransactionType.EXPENSE, TransactionType.CREDIT)
             TRANSFER -> setOf(TransactionType.TRANSFER)
@@ -60,7 +61,7 @@ enum class TransactionTypeFilter(@StringRes val labelRes: Int) {
      * view (#898); the list already shows expense and credit totals side by side.
      */
     val inTransactionsList: Boolean
-        get() = this != SPENDING
+        get() = this != SPENDING && this != CREDIT
 }
 
 val TimePeriod.label: String

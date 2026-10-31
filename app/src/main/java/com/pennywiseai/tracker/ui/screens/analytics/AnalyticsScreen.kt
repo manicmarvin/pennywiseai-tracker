@@ -873,7 +873,7 @@ private fun AnalyticsFilterBar(
                     onDismissRequest = onTypeDismiss,
                     shape = MaterialTheme.shapes.large
                 ) {
-                    TransactionTypeFilter.values().forEach { typeFilter ->
+                    TransactionTypeFilter.values().filter { it.inTransactionsList }.forEach { typeFilter ->
                         DropdownMenuItem(
                             text = { Text(typeFilter.label) },
                             leadingIcon = {

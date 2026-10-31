@@ -651,14 +651,14 @@ private fun TransactionReceipt(
     val typeColor = when (transaction.transactionType) {
         TransactionType.INCOME -> if (isDark) income_dark else income_light
         TransactionType.EXPENSE -> if (isDark) expense_dark else expense_light
-        TransactionType.CREDIT -> if (isDark) credit_dark else credit_light
+        TransactionType.CREDIT -> if (isDark) expense_dark else expense_light
         TransactionType.TRANSFER -> if (isDark) transfer_dark else transfer_light
         TransactionType.INVESTMENT -> if (isDark) investment_dark else investment_light
     }
     val sign = when (transaction.transactionType) {
         TransactionType.INCOME -> "+"
         TransactionType.EXPENSE -> "-"
-        TransactionType.CREDIT -> ""
+        TransactionType.CREDIT -> "-"
         TransactionType.TRANSFER -> ""
         TransactionType.INVESTMENT -> ""
     }
@@ -724,7 +724,7 @@ private fun TransactionReceipt(
                     when (transaction.transactionType) {
                         TransactionType.INCOME -> R.string.txn_type_income
                         TransactionType.EXPENSE -> R.string.txn_type_expense
-                        TransactionType.CREDIT -> R.string.txn_type_credit
+                        TransactionType.CREDIT -> R.string.txn_type_expense
                         TransactionType.TRANSFER -> R.string.txn_type_transfer
                         TransactionType.INVESTMENT -> R.string.txn_type_investment
                     }
@@ -732,7 +732,7 @@ private fun TransactionReceipt(
                 val typeIcon = when (transaction.transactionType) {
                     TransactionType.INCOME -> Icons.AutoMirrored.Filled.TrendingUp
                     TransactionType.EXPENSE -> Icons.AutoMirrored.Filled.TrendingDown
-                    TransactionType.CREDIT -> Icons.Default.CreditCard
+                    TransactionType.CREDIT -> Icons.AutoMirrored.Filled.TrendingDown
                     TransactionType.TRANSFER -> Icons.Default.SwapHoriz
                     TransactionType.INVESTMENT -> Icons.AutoMirrored.Filled.ShowChart
                 }

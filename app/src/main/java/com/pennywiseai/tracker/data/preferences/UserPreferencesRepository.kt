@@ -280,7 +280,8 @@ open class UserPreferencesRepository @Inject constructor(
      */
     val countCreditCardAsExpense: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
-            preferences[PreferencesKeys.COUNT_CREDIT_AS_EXPENSE] ?: false
+            // Always on: card purchases are expenses, bill payments are transfers.
+            true
         }
 
     val numberFormatStyle: Flow<NumberFormatStyle> = context.dataStore.data

@@ -1563,15 +1563,12 @@ class TransactionsViewModel @Inject constructor(
                 .toBigDecimal()
 
             val rawExpenses = currencyTransactions
-                .filter { it.transactionType == TransactionType.EXPENSE }
+                .filter { it.transactionType == TransactionType.EXPENSE || it.transactionType == TransactionType.CREDIT }
                 .map { it.amount.toDouble() }.sum()
                 .toBigDecimal()
             val expenses = (rawExpenses - refundTotal).coerceAtLeast(BigDecimal.ZERO)
 
-            val credit = currencyTransactions
-                .filter { it.transactionType == TransactionType.CREDIT }
-                .map { it.amount.toDouble() }.sum()
-                .toBigDecimal()
+            val credit = BigDecimal.ZERO // card spend is counted in expenses above
 
             val transfer = currencyTransactions
                 .filter { it.transactionType == TransactionType.TRANSFER }

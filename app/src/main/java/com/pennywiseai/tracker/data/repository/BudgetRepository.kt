@@ -155,7 +155,8 @@ class BudgetRepository @Inject constructor(
             // Filter to only include EXPENSE transactions, excluding loan repayments
             // and transactions the user excluded from analytics (#451).
             allTransactions.forTotals().filter {
-                it.transaction.transactionType == TransactionType.EXPENSE
+                it.transaction.transactionType == TransactionType.EXPENSE ||
+                    it.transaction.transactionType == TransactionType.CREDIT
             }
         }
 

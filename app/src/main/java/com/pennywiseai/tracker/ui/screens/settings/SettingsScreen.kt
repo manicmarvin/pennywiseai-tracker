@@ -141,7 +141,6 @@ fun SettingsScreen(
     val isDeletingAllTransactions by settingsViewModel.isDeletingAllTransactions.collectAsStateWithLifecycle()
     val deleteAllTransactionsResult by settingsViewModel.deleteAllTransactionsResult.collectAsStateWithLifecycle()
     val unifiedCurrencyMode by settingsViewModel.unifiedCurrencyMode.collectAsStateWithLifecycle(initialValue = false)
-    val countCreditCardAsExpense by settingsViewModel.countCreditCardAsExpense.collectAsStateWithLifecycle(initialValue = false)
     val dailySummaryEnabled by settingsViewModel.dailySummaryEnabled.collectAsStateWithLifecycle(initialValue = com.pennywiseai.tracker.data.preferences.DAILY_SUMMARY_DEFAULT)
     val displayCurrency by settingsViewModel.displayCurrency.collectAsStateWithLifecycle(initialValue = "")
     val availableCurrencies by settingsViewModel.availableCurrencies.collectAsStateWithLifecycle()
@@ -394,16 +393,7 @@ fun SettingsScreen(
                     onClick = onNavigateToExchangeRates,
                     position = ListItemPosition.Middle
                 )
-                SettingsSwitchRow(
-                    icon = Icons.Default.CreditCard,
-                    iconBgColor = indigo_light,
-                    iconTint = indigo_dark,
-                    title = stringResource(R.string.settings_card_spend_as_expense_title),
-                    subtitle = stringResource(R.string.settings_card_spend_as_expense_subtitle),
-                    checked = countCreditCardAsExpense,
-                    onCheckedChange = { settingsViewModel.setCountCreditCardAsExpense(it) },
-                    position = ListItemPosition.Middle
-                )
+                // "Count card spend as expense" toggle removed: card spend always counts.
                 SettingsDropdownItem(
                     icon = Icons.Default.Flag,
                     iconBgColor = indigo_light,

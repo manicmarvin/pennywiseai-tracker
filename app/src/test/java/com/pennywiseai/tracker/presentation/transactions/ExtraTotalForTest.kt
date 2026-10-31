@@ -19,15 +19,10 @@ class ExtraTotalForTest {
     private val noCredit = totals.copy(credit = BigDecimal.ZERO)
 
     @Test
-    fun creditFilter_showsCreditTotal() {
-        // #893: the Credit filter used to read ₹0 / ₹0 / ₹0.
-        assertEquals(ExtraTotal(ExtraTotalKind.CREDIT, BigDecimal("250")), extraTotalFor(totals, TransactionTypeFilter.CREDIT, false))
-    }
-
-    @Test
-    fun allFilter_showsCreditOnlyWhenThereIsCardSpend() {
-        assertEquals(ExtraTotalKind.CREDIT, extraTotalFor(totals, TransactionTypeFilter.ALL, false)?.kind)
-        assertNull(extraTotalFor(noCredit, TransactionTypeFilter.ALL, false))
+    fun creditTile_isGone_cardSpendIsInExpenses() {
+        // Fork: card purchases count as expenses, so there's no separate Credit tile.
+        assertNull(extraTotalFor(totals, TransactionTypeFilter.ALL, false))
+        assertNull(extraTotalFor(totals, TransactionTypeFilter.TRANSFER, true))
     }
 
     @Test
@@ -40,17 +35,5 @@ class ExtraTotalForTest {
     fun transferAndInvestmentFilters_showTheirOwnTotal() {
         assertEquals(ExtraTotal(ExtraTotalKind.TRANSFER, BigDecimal("400")), extraTotalFor(totals, TransactionTypeFilter.TRANSFER, false))
         assertEquals(ExtraTotal(ExtraTotalKind.INVESTMENT, BigDecimal("500")), extraTotalFor(totals, TransactionTypeFilter.INVESTMENT, false))
-    }
-
-    @Test
-    fun selection_alwaysShowsCredit_evenWhenZero() {
-        // #634: the selection card always has the credit tile.
-        assertEquals(ExtraTotal(ExtraTotalKind.CREDIT, BigDecimal.ZERO), extraTotalFor(noCredit, TransactionTypeFilter.TRANSFER, true))
-    }
-
-    @Test
-    fun creditFilter_showsTileEvenWhenTotalIsZero() {
-        // e.g. every card spend in the list is excluded from analytics.
-        assertEquals(ExtraTotal(ExtraTotalKind.CREDIT, BigDecimal.ZERO), extraTotalFor(noCredit, TransactionTypeFilter.CREDIT, false))
     }
 }
